@@ -1,5 +1,6 @@
 // @ts-check
 const { test } = require('@playwright/test');
+const { faker } = require('@faker-js/faker');
 
 const { LandingPage } = require('../pages/LandingPage');
 const { Toast } = require('../pages/Components');
@@ -13,12 +14,15 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('deve cadastrar um lead na fila de espera', async ({ page }) => {
-  const message =
-    'Agradecemos por compartilhar seus dados conosco. Em breve, nossa equipe entrará em contato!';
+  const leadName = faker.person.fullName();
+  const leadEmail = faker.internet.email();
 
   await landingPage.visit();
   await landingPage.openLeadModal();
-  await landingPage.submitLeadForm('Customer User', 'customer@test.com');
+  await landingPage.submitLeadForm(leadName, leadEmail);
+
+  const message =
+    'Agradecemos por compartilhar seus dados conosco. Em breve, nossa equipe entrará em contato!';
   await toast.haveText(message);
 });
 
