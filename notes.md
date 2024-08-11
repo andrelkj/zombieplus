@@ -35,3 +35,15 @@ console.log(content);
 ```
 
 **Note:** it might be required when working with temporary elements that are hard to interact with
+
+### Validation of elements with same locator
+
+Playwright handles validations against the same element locator or multielement locators as a forEach loop. It means that you can use arrays to declare what is expected and playwright will run it as a loop for each locator found to the given selector:
+
+```js
+// working with multielement locators
+await expect(page.locator('.alert')).toHaveText([
+  'Campo obrigatório',
+  'Campo obrigatório',
+]);
+```
