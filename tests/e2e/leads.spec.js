@@ -1,10 +1,15 @@
 // @ts-check
 const { test } = require('@playwright/test');
+
 const { LandingPage } = require('../pages/LandingPage');
+const { Toast } = require('../pages/Components');
 
 let landingPage;
+let toast;
+
 test.beforeEach(async ({ page }) => {
   landingPage = new LandingPage(page);
+  toast = new Toast(page);
 });
 
 test('deve cadastrar um lead na fila de espera', async ({ page }) => {
@@ -14,7 +19,7 @@ test('deve cadastrar um lead na fila de espera', async ({ page }) => {
   await landingPage.visit();
   await landingPage.openLeadModal();
   await landingPage.submitLeadForm('Customer User', 'customer@test.com');
-  await landingPage.toastHaveText(message);
+  await toast.haveText(message);
 });
 
 test('não deve cadastrar com email incorreto', async ({ page }) => {
