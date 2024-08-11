@@ -20,7 +20,7 @@ export class LoginPage {
   }
 
   async isLoggedIn() {
-    const logoutLink = this.page.locator('a[href="/logout"]');
-    await expect(logoutLink).toBeVisible();
+    await this.page.waitForLoadState('networkidle') // wait all network traffic is finished
+    await expect(this.page).toHaveURL(/.*admin/)
   }
 }
