@@ -11,8 +11,8 @@ test('cadastrar um lead na fila de espera', async ({ page }) => {
   );
 
   // submit modal
-  await page.getByPlaceholder('Seu nome completo').fill('Customer User');
-  await page.getByPlaceholder('Seu email principal').fill('customer@test.com');
+  await page.getByPlaceholder('Informe seu nome').fill('Customer User');
+  await page.getByPlaceholder('Informe seu email').fill('customer@test.com');
   await page.getByTestId('modal').getByText('Quero entrar na fila!').click();
 
   // validate modal
@@ -33,8 +33,8 @@ test('não deve cadastrar com email incorreto', async ({ page }) => {
   );
 
   // submit modal
-  await page.getByPlaceholder('Seu nome completo').fill('Customer User');
-  await page.getByPlaceholder('Seu email principal').fill('customer.test.com');
+  await page.getByPlaceholder('Informe seu nome').fill('Customer User');
+  await page.getByPlaceholder('Informe seu email').fill('customer.test.com');
   await page.getByTestId('modal').getByText('Quero entrar na fila!').click();
 
   // validate error message
@@ -51,7 +51,7 @@ test('não deve cadastrar quando o nome não é preenchido', async ({ page }) =>
   );
 
   // submit modal
-  await page.getByPlaceholder('Seu email principal').fill('customer@test.com');
+  await page.getByPlaceholder('Informe seu email').fill('customer@test.com');
   await page.getByTestId('modal').getByText('Quero entrar na fila!').click();
 
   // validate error message
@@ -68,7 +68,7 @@ test('não deve cadastrar quando o email não é preenchido', async ({ page }) =
   );
 
   // submit modal
-  await page.getByPlaceholder('Seu nome completo').fill('Customer User');
+  await page.getByPlaceholder('Informe seu nome').fill('Customer User');
   await page.getByTestId('modal').getByText('Quero entrar na fila!').click();
 
   // validate error message
