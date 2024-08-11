@@ -20,7 +20,12 @@ export class LoginPage {
   }
 
   async isLoggedIn() {
-    await this.page.waitForLoadState('networkidle') // wait all network traffic is finished
-    await expect(this.page).toHaveURL(/.*admin/)
+    await this.page.waitForLoadState('networkidle'); // wait all network traffic is finished
+    await expect(this.page).toHaveURL(/.*admin/);
+  }
+
+  async alertHaveText(text) {
+    const alert = this.page.locator('span[class$=alert]');
+    await expect(alert).toHaveText(text);
   }
 }

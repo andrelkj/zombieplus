@@ -47,3 +47,25 @@ await expect(page.locator('.alert')).toHaveText([
   'Campo obrigatório',
 ]);
 ```
+
+### Regex
+
+It is possible to use regex with locators and arguments or expected messages to create a more dynamic and reusable test structure
+
+Using regex to get only a piece of the url:
+
+```js
+  async isLoggedIn() {
+    await this.page.waitForLoadState('networkidle'); // wait all network traffic is finished
+    await expect(this.page).toHaveURL(/.*admin/);
+  }
+```
+
+Using CSS selectors with regex `span[class$=alert]` to simplify element search:
+
+```js
+  async alertHaveText(text) {
+    const alert = this.page.locator('span[class$=alert]');
+    await expect(alert).toHaveText(text);
+  }
+```
