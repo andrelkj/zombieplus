@@ -16,12 +16,10 @@ test.beforeEach(async ({ page }) => {
   toast = new Toast(page);
 });
 
-test.beforeAll(async () => {
+test('deve cadastrar um lead na fila de espera', async ({ page }) => {
   leadName = faker.person.fullName();
   leadEmail = faker.internet.email();
-});
 
-test('deve cadastrar um lead na fila de espera', async ({ page }) => {
   await landingPage.visit();
   await landingPage.openLeadModal();
   await landingPage.submitLeadForm(leadName, leadEmail);
@@ -32,6 +30,13 @@ test('deve cadastrar um lead na fila de espera', async ({ page }) => {
 });
 
 test('não deve cadastrar quando o email já existe', async ({ page }) => {
+  leadName = faker.person.fullName();
+  leadEmail = faker.internet.email();
+
+  await landingPage.visit();
+  await landingPage.openLeadModal();
+  await landingPage.submitLeadForm(leadName, leadEmail);
+
   await landingPage.visit();
   await landingPage.openLeadModal();
   await landingPage.submitLeadForm(leadName, leadEmail);
