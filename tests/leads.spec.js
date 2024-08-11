@@ -1,97 +1,52 @@
 // @ts-check
-const { test, expect } = require('@playwright/test');
+const { test } = require('@playwright/test');
+const { LandingPage } = require('./pages/LandingPage');
 
-test('cadastrar um lead na fila de espera', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  await page.getByRole('button', { name: /Aperte o play/ }).click();
-
-  // modal checkpoint
-  await expect(page.getByTestId('modal').getByRole('heading')).toHaveText(
-    'Fila de espera'
-  );
-
-  // submit modal
-  await page.getByPlaceholder('Informe seu nome').fill('Customer User');
-  await page.getByPlaceholder('Informe seu email').fill('customer@test.com');
-  await page.getByTestId('modal').getByText('Quero entrar na fila!').click();
-
-  // validate modal
+test('deve cadastrar um lead na fila de espera', async ({ page }) => {
+  const landingPage = new LandingPage(page);
   const message =
     'Agradecemos por compartilhar seus dados conosco. Em breve, nossa equipe entrará em contato!';
-  await expect(page.locator('.toast')).toHaveText(message);
 
-  await expect(page.locator('.toast')).toBeHidden({ timeout: 5000 });
+  await landingPage.visit();
+  await landingPage.openLeadModal();
+  await landingPage.submitLeadForm('Customer User', 'customer@test.com');
+  await landingPage.toastHaveText(message);
 });
 
 test('não deve cadastrar com email incorreto', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  await page.getByRole('button', { name: /Aperte o play/ }).click();
+  const landingPage = new LandingPage(page);
 
-  // modal checkpoint
-  await expect(page.getByTestId('modal').getByRole('heading')).toHaveText(
-    'Fila de espera'
-  );
-
-  // submit modal
-  await page.getByPlaceholder('Informe seu nome').fill('Customer User');
-  await page.getByPlaceholder('Informe seu email').fill('customer.test.com');
-  await page.getByTestId('modal').getByText('Quero entrar na fila!').click();
-
-  // validate error message
-  await expect(page.locator('.alert')).toHaveText('Email incorreto');
+  await landingPage.visit();
+  await landingPage.openLeadModal();
+  await landingPage.submitLeadForm('Customer User', 'customer.test.com');
+  await landingPage.alertHaveText('Email incorreto');
 });
 
 test('não deve cadastrar quando o nome não é preenchido', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  await page.getByRole('button', { name: /Aperte o play/ }).click();
+  const landingPage = new LandingPage(page);
 
-  // modal checkpoint
-  await expect(page.getByTestId('modal').getByRole('heading')).toHaveText(
-    'Fila de espera'
-  );
-
-  // submit modal
-  await page.getByPlaceholder('Informe seu email').fill('customer@test.com');
-  await page.getByTestId('modal').getByText('Quero entrar na fila!').click();
-
-  // validate error message
-  await expect(page.locator('.alert')).toHaveText('Campo obrigatório');
+  await landingPage.visit();
+  await landingPage.openLeadModal();
+  await landingPage.submitLeadForm('', 'customer@test.com');
+  await landingPage.alertHaveText('Campo obrigatório');
 });
 
 test('não deve cadastrar quando o email não é preenchido', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  await page.getByRole('button', { name: /Aperte o play/ }).click();
+  const landingPage = new LandingPage(page);
 
-  // modal checkpoint
-  await expect(page.getByTestId('modal').getByRole('heading')).toHaveText(
-    'Fila de espera'
-  );
-
-  // submit modal
-  await page.getByPlaceholder('Informe seu nome').fill('Customer User');
-  await page.getByTestId('modal').getByText('Quero entrar na fila!').click();
-
-  // validate error message
-  await expect(page.locator('.alert')).toHaveText('Campo obrigatório');
+  await landingPage.visit();
+  await landingPage.openLeadModal();
+  await landingPage.submitLeadForm('Customer User', '');
+  await landingPage.alertHaveText('Campo obrigatório');
 });
 
 test('não deve cadastrar quando nenhum campo é preenchido', async ({
   page,
 }) => {
-  await page.goto('http://localhost:3000');
-  await page.getByRole('button', { name: /Aperte o play/ }).click();
+  const landingPage = new LandingPage(page);
 
-  // modal checkpoint
-  await expect(page.getByTestId('modal').getByRole('heading')).toHaveText(
-    'Fila de espera'
-  );
-
-  // submit modal
-  await page.getByTestId('modal').getByText('Quero entrar na fila!').click();
-
-  // validate error message when there's more than one element with the same selector
-  await expect(page.locator('.alert')).toHaveText([
-    'Campo obrigatório',
-    'Campo obrigatório',
-  ]);
+  await landingPage.visit();
+  await landingPage.openLeadModal();
+  await landingPage.submitLeadForm('', '');
+  await landingPage.alertHaveText(['Campo obrigatório', 'Campo obrigatório']);
 });
