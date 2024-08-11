@@ -69,3 +69,28 @@ Using CSS selectors with regex `span[class$=alert]` to simplify element search:
     await expect(alert).toHaveText(text);
   }
 ```
+
+## Best practices
+
+### Page Object Model (POM)
+
+When using POM it is import to keep the rules and folder structure to the letter so you avoid management issues in the future
+
+As an example we have the `isLoggedIn` function that is part of the user login validation and was previously defined inside the LoginPage
+
+```js
+  async isLoggedIn() {
+    await this.page.waitForLoadState('networkidle'); // wait all network traffic is finished
+    await expect(this.page).toHaveURL(/.*admin/);
+  }
+```
+
+although once you log in into the application you're no longer in the login page but in the movies page instead, so we created the [MoviesPage](./tests/pages/MoviesPage.js) file and moved the `isLoggedIn` function to it, and updated the [login spec](./tests/e2e/login.spec.js) to keep up with the new page:
+
+```js
+test('deve logar como administrador', async ({ page }) => {
+  await loginPage.visit();
+  await loginPage.submit('admin@zombieplus.com', 'pwd123');
+  await moviesPage.isLoggedIn();
+});
+```
