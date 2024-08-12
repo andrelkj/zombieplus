@@ -1,5 +1,9 @@
 # Playwright
 
+## Database
+
+We are using Postgres SQL as the main database that is running locally through Docker containers. In order to stablish connection to the postgres database we installed the pg library `npm i pg --save-dev`
+
 ## Commands
 
 ### Running tests
@@ -95,6 +99,15 @@ and playwright allow you to use `getByLabel` function to look for the child elem
     await this.page.getByLabel('Titulo do filme').fill(title)
   }
 ```
+
+### Database connection for reliable and reusable test data
+
+When working with tests data require data injection, a good practice is to stablish connections with the available database to manage the data available easly
+
+By using this approach you can generate independent, reusable, fresh data on every test execution, avoiding:
+- storage space consumption
+- flaky tests caused by mutable shared data
+- large loads of data to handle
 
 ## Best practices
 
