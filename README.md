@@ -70,6 +70,32 @@ Using CSS selectors with regex `span[class$=alert]` to simplify element search:
   }
 ```
 
+### Snake case
+
+Javascript standard convension is to use camelCase model, although we are using snake_case notation in the [MoviesPage](./tests/pages/MoviesPage.js) just to match this project database and REST API notation which can provide a better data handling and management
+
+### Elements relation by label
+
+in HTML when there is a label for using the same value as the id of a child element it stablish a connection in between these elements:
+
+```html
+<label for="title" class="sc-kAyceB cmzCot"
+  ><span class="field-name">Titulo do filme</span
+  ><input name="title" id="title" placeholder="Digite aqui" value=""
+/></label>
+```
+
+**Note:** the for value of the label (title) is the same as the input id value (title) which imply that they are related to each other
+
+and playwright allow you to use `getByLabel` function to look for the child element based into this connection:
+
+```js
+  async create(title, overview, company, release_year) {
+    await this.page.locator('a[href$="register"]').click()
+    await this.page.getByLabel('Titulo do filme').fill(title)
+  }
+```
+
 ## Best practices
 
 ### Page Object Model (POM)
