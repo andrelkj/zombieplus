@@ -1,5 +1,5 @@
 // @ts-check
-const { test } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 const { faker } = require('@faker-js/faker');
 
 const { LandingPage } = require('../pages/LandingPage');
@@ -29,13 +29,23 @@ test('deve cadastrar um lead na fila de espera', async ({ page }) => {
   await toast.haveText(message);
 });
 
-test('não deve cadastrar quando o email já existe', async ({ page }) => {
+test('não deve cadastrar quando o email já existe', async ({
+  page,
+  request,
+}) => {
   leadName = faker.person.fullName();
   leadEmail = faker.internet.email();
 
-  await landingPage.visit();
-  await landingPage.openLeadModal();
-  await landingPage.submitLeadForm(leadName, leadEmail);
+  // send a new lead through API
+  const newLead = await request.post('http://localhost:3333/leads', {
+    data: {
+      name: leadName,
+      email: leadEmail,
+    },
+  });
+
+  // confirm status OK is returned (200-299)
+  expect(newLead.ok()).toBeTruthy()
 
   await landingPage.visit();
   await landingPage.openLeadModal();
