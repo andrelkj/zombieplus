@@ -1,5 +1,7 @@
 const { test } = require('@playwright/test');
 
+const data = require('../support/fixtures/movies.json');
+
 const { LoginPage } = require('../pages/LoginPage');
 const { MoviesPage } = require('../pages/MoviesPage');
 const { Toast } = require('../pages/Components');
@@ -16,9 +18,17 @@ test.beforeEach(({ page }) => {
 
 test('deve poder cadastrar um novo filme', async ({ page }) => {
   // é importante estar logado
+  const movie = data.create;
+
   await loginPage.visit();
   await loginPage.submit('admin@zombieplus.com', 'pwd123');
   await moviesPage.isLoggedIn();
 
-  await moviesPage.create('Nome do filme', 'Sinopse', 'Amazon Studios', '2023')
+  await moviesPage.create(
+    movie.title,
+    movie.overview,
+    movie.company,
+    movie.release_year
+  );
+  await toast.containText('Cadastro realizado com sucesso!');
 });

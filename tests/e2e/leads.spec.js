@@ -26,7 +26,7 @@ test('deve cadastrar um lead na fila de espera', async ({ page }) => {
 
   const message =
     'Agradecemos por compartilhar seus dados conosco. Em breve, nossa equipe entrará em contato!';
-  await toast.haveText(message);
+  await toast.containText(message);
 });
 
 test('não deve cadastrar quando o email já existe', async ({
@@ -53,7 +53,7 @@ test('não deve cadastrar quando o email já existe', async ({
 
   const message =
     'O endereço de e-mail fornecido já está registrado em nossa fila de espera.';
-  await toast.haveText(message);
+  await toast.containText(message);
 });
 
 test('não deve cadastrar com email incorreto', async ({ page }) => {
