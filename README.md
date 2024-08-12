@@ -105,9 +105,41 @@ and playwright allow you to use `getByLabel` function to look for the child elem
 When working with tests data require data injection, a good practice is to stablish connections with the available database to manage the data available easly
 
 By using this approach you can generate independent, reusable, fresh data on every test execution, avoiding:
+
 - storage space consumption
 - flaky tests caused by mutable shared data
 - large loads of data to handle
+
+To connect with the database we first need to provide the credentials:
+
+```js
+const DbConfig = {
+  user: 'username', // username to access your
+  host: 'localhost', // since where running locally
+  database: 'dbname', // db name where you want to run the query against
+  password: 'password', // password to access your database
+  port: 5432,
+};
+```
+
+**Note:** you can get this information into your database properties
+
+then you stablesh the connection, handling errors with:
+
+```js
+export async function executeSQL(sqlScript) {
+  const pool = new Pool(DbConfig);
+
+  try {
+    const client = await pool.connect();
+
+    const result = await client.query(sqlScript);
+    console.log(result.rows);
+  } catch (error) {
+    console.log('Erro ao executar o SQL ' + error);
+  }
+}
+```
 
 ## Best practices
 
