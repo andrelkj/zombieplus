@@ -1,10 +1,30 @@
 # Playwright
 
-## Database
+![poster](https://raw.githubusercontent.com/qaxperience/thumbnails/main/playwright-zombie.png)
+
+## 🤘 About
+
+Repository for the Zombie Plus system's automated test project, built during the Playwright Zombie Edition course! Playwright is an open-source tool developed by Microsoft that revolutionizes test automation in web systems, offering an effective and highly reliable approach.
+
+## 💻 Technologies
+
+- Node.js
+- Playwright
+- Javascript
+- Faker
+- PostgreSQL
+
+## 🤖 How to run
+
+1. Clone the repository, install dependencies with `npm install`
+2. Run tests in Headless mode with `npx playwright test`
+3. View the test report with `npx playwright show-report`
+
+## 📊 Database
 
 We are using Postgres SQL as the main database that is running locally through Docker containers. In order to stablish connection to the postgres database we installed the pg library `npm i pg --save-dev`.
 
-## Commands
+## ⚙️ Commands
 
 ### Running tests
 
@@ -18,7 +38,7 @@ Some common statements are:
 - `debug` to run the test execution step by step in debbuger mode
 - `ui` to open playwright gui page
 
-## Tricks
+## 💡 Tricks
 
 ### Temporary elements
 
@@ -212,7 +232,7 @@ test('deve poder cadastrar um novo filme', async ({ page }) => {
 
 **Note:** although it helps to centralize all import into a single file you need to consider it's impact into the execution performance once you'll load the context of all pages everytime instead of only the page specific contexts as before.
 
-## Best practices
+## ✅ Best practices
 
 ### Page Object Model (POM)
 
@@ -236,3 +256,7 @@ test('deve logar como administrador', async ({ page }) => {
   await moviesPage.isLoggedIn();
 });
 ```
+
+---
+
+Curso disponível em https://qaxperience.com
