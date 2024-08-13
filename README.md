@@ -232,6 +232,31 @@ test('deve poder cadastrar um novo filme', async ({ page }) => {
 
 **Note:** although it helps to centralize all import into a single file you need to consider it's impact into the execution performance once you'll load the context of all pages everytime instead of only the page specific contexts as before.
 
+#### Update to import standard functions from page context
+
+The approach used above to inject can be applied to centralize POM imports, but it causes standard playwright functions that comes with the page context to be lost.
+
+In order to fix that we updated the [index.js](./tests/support/index.js) file to store the original page content into a variable and then injecting each individual page initialization to it:
+
+```js
+const test = base.extend({
+  page: async ({ page }, use) => {
+    // store the original page context into a variable
+    const context = page;
+
+    // inject each individual page into the page context
+    context['landing'] = new LandingPage(page);
+    context['login'] = new LoginPage(page);
+    context['movies'] = new MoviesPage(page);
+    context['toast'] = new Toast(page);
+
+    await use(context);
+  },
+});
+```
+
+**Note:** at this point you should be able to use both native playwright and page specific functions. 
+
 ## ✅ Best practices
 
 ### Page Object Model (POM)

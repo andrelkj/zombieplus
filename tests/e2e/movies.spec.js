@@ -4,10 +4,8 @@ const data = require('../support/fixtures/movies.json');
 const { executeSQL } = require('../support/database');
 
 test('deve poder cadastrar um novo filme', async ({ page }) => {
-  // é importante estar logado
   const movie = data.create;
   await executeSQL(`DELETE FROM public.movies WHERE title = '${movie.title}';`);
-
   await page.login.visit();
   await page.login.submit('admin@zombieplus.com', 'pwd123');
   await page.movies.isLoggedIn();
