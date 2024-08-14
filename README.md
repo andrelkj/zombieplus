@@ -31,6 +31,10 @@ For this project two main documents were created:
 
 We are using Postgres SQL as the main database that is running locally through Docker containers. In order to stablish connection to the postgres database we installed the pg library `npm i pg --save-dev`.
 
+## API
+
+To manage requests from Zombie+ application we are using Insomnia.
+
 ## ⚙️ Commands
 
 ### Running tests
@@ -444,6 +448,116 @@ test.beforeAll(async () => {
 ```
 
 Given that by deleting it after the test execution there will be no data to work with or troubleshoot in case you need to.
+
+### Using API requests
+
+Once your project starts to become more complex you'll face test cases that will require duplicated steps to setup the actual test scenario (e.g. duplicated movie title scenario):
+
+```js
+test('não deve cadastrar quando o título é duplicado', async ({ page }) => {
+  const movie = data.duplicate;
+  await page.movies.create(movie); // setup step to create a movie
+  await page.movies.create(movie); // step to duplicate the movie
+  await page.toast.containText(
+    'Este conteúdo já encontra-se cadastrado no catálogo'
+  );
+});
+```
+
+In this case we can use API requests to setup data in the backend:
+
+```js
+const { expect } = require('@playwright/test');
+
+export class Api {
+  constructor(request) {
+    this.request = request;
+    this.token = undefined;
+  }
+
+  // define setToken function to send a post request with the given JSON payload
+  async setToken() {
+    const response = await this.request.post('http://localhost:3333/sessions', {
+      data: {
+        email: 'admin@zombieplus.com',
+        password: 'pwd123',
+      },
+    });
+
+    // expect for any 2.. response status code
+    expect(response.ok()).toBeTruthy();
+
+    // transform response into JSON and store token value into a variable
+    const body = JSON.parse(await response.text());
+    this.token = 'Bearer ' + body.token;
+    console.log(this.token);
+  }
+
+  async postMovie(movie) {
+    // set the token to authenticate the user
+    await this.setToken();
+
+    // setup headers information
+    const response = await this.request.post('http://localhost:3333/movies', {
+      headers: {
+        Authorization: this.token,
+        ContentType: 'multipart/form-data',
+        Accept: 'application/json, text/plain, */*',
+      },
+      // fill the body payload
+      multipart: {
+        title: movie.title,
+        overview: movie.overview,
+        company_id: 'b7289a60-19a3-4d65-9ec4-8a852fe07695',
+        release_year: movie.release_year,
+        featured: movie.featured,
+      },
+    });
+
+    expect(response.ok()).toBeTruthy();
+  }
+}
+```
+
+and then we just need to import the [request file](./tests/support/api/index.js) to your [main import file](./tests/support/index.js) adding the new api context:
+
+```js
+const { Api } = require('./api');
+
+const test = base.extend({
+  ...
+  request: async ({ request }, use) => {
+    const context = request;
+
+    context['api'] = new Api(request);
+
+    await use(context);
+  },
+});
+```
+
+and finally call the function from within the test case:
+
+```js
+test('não deve cadastrar quando o título é duplicado', async ({
+  page,
+  request,
+}) => {
+  const movie = data.duplicate;
+
+  // setup the movie in the backend
+  await request.api.postMovie(movie);
+
+  // try to register the movie again
+  await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin');
+  await page.movies.create(movie);
+  await page.toast.containText(
+    'Este conteúdo já encontra-se cadastrado no catálogo'
+  );
+});
+```
+
+**Note:** it is a good practice to create a separate api folder to keep all your api requests.
 
 ---
 
