@@ -23,6 +23,7 @@ Repository for the Zombie Plus system's automated test project, built during the
 ## 📑 Documents
 
 For this project two main documents were created:
+
 - [Zombie+ Roadmap](https://whimsical.com/zombie-roadmap-2G4AWdgEXavAxBQidogS4o) - that includes test cases for each application functionality
 - [Zombie+ Regression Tests](https://qaxperience.notion.site/Zombie-Regression-Tests-5d726cfee1484a2e9ee177b9467cb00c) - that contains a brief test plan for regression test execution
 
@@ -431,6 +432,18 @@ test('não deve cadastrar quando nenhum campo é preenchido', async ({
   await page.leads.alertHaveText(['Campo obrigatório', 'Campo obrigatório']);
 });
 ```
+
+### Data handling
+
+It is common to integrate your framework with the database to manage and handle the test data during it's execution, one good practice though is to refresh your data before your test execution:
+
+```js
+test.beforeAll(async () => {
+  await executeSQL(`DELETE FROM public.movies WHERE`);
+});
+```
+
+Given that by deleting it after the test execution there will be no data to work with or troubleshoot in case you need to.
 
 ---
 
