@@ -265,6 +265,38 @@ const test = base.extend({
 
 ## ✅ Best practices
 
+### Test independence
+
+Playwright is build in a way that all test cases are executed simultaneasly so dependent test cases often fail once there is no assurance that they'll be executed in the same order every time.
+
+With that said dependent test cases as those two here:
+
+```js
+// register the movie
+test('deve poder cadastrar um novo filme', async ({ page }) => {
+  const movie = data.create;
+  await executeSQL(`DELETE FROM public.movies WHERE title = '${movie.title}';`);
+  await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin');
+  await page.movies.create(movie);
+  await page.toast.containText('Cadastro realizado com sucesso!');
+});
+
+// try to register the same movie again
+test('não deve cadastrar quando o título é duplicado', async ({ page }) => {
+  const movie = data.create;
+
+  await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin');
+  await page.movies.create(movie);
+  await page.toast.containText(
+    'Este conteúdo já encontra-se cadastrado no catálogo'
+  );
+});
+```
+
+Are mostly likely going to fail once the duplicated scenario can run first and cause to movie to be successfully registered and then the movie registration scenarion runs secondly receiving the duplicated error message.
+
+**Note:** other frameworks may allow you to run tests sequentially making it work, but it still a bad practice in automation as both tests might fail in case something happens in the process.
+
 ### Page Object Model (POM)
 
 When using POM it is import to keep the rules and folder structure to the letter so you avoid management issues in the future.
