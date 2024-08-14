@@ -36,7 +36,14 @@ export class Movies {
       .click();
 
     // attach poster image
-    await this.page.locator('input[name="cover"]').setInputFiles('tests/support/fixtures' + movie.cover)
+    await this.page
+      .locator('input[name="cover"]')
+      .setInputFiles('tests/support/fixtures' + movie.cover);
+
+    // check movie as featured when true
+    if (movie.featured) {
+      await this.page.locator('.featured .react-switch').click();
+    }
 
     await this.submit();
   }
