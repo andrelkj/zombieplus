@@ -5,7 +5,7 @@
     "company": "Paramount Pictures",
     "release_year": 2013,
     "featured": true,
-    "cover": "/caminho/para/guerra_mundial_z.png"
+    "cover": "/covers/movies/wwz.png"
   },
   "resident_evil_o_hospedeiro": {
     "title": "Resident Evil: O Hospedeiro",
@@ -13,7 +13,7 @@
     "company": "Screen Gems",
     "release_year": 2002,
     "featured": false,
-    "cover": "/caminho/para/resident_evil_o_hospedeiro.png"
+    "cover": "/covers/movies/resident-evil.jpg"
   },
   "a_noite_dos_mortos_vivos": {
     "title": "A Noite dos Mortos-Vivos",
@@ -21,7 +21,7 @@
     "company": "Continental Distributing",
     "release_year": 1968,
     "featured": false,
-    "cover": "/caminho/para/a_noite_dos_mortos_vivos.png"
+    "cover": "/covers/movies/mortos-vivos.jpg"
   },
   "exterminio": {
     "title": "Extermínio",
@@ -29,7 +29,7 @@
     "company": "Fox Searchlight Pictures",
     "release_year": 2002,
     "featured": true,
-    "cover": "/caminho/para/exterminio.png"
+    "cover": "/covers/movies/exterminio.jpg"
   },
   "madrugada_dos_mortos": {
     "title": "Madrugada dos Mortos",
@@ -37,7 +37,7 @@
     "company": "Universal Pictures",
     "release_year": 2004,
     "featured": false,
-    "cover": "/caminho/para/madrugada_dos_mortos.png"
+    "cover": "/covers/movies/madrugada.jpg"
   },
   "zumbilandia": {
     "title": "Zumbilândia",
@@ -45,7 +45,7 @@
     "company": "Sony Pictures",
     "release_year": 2009,
     "featured": true,
-    "cover": "/caminho/para/zumbilandia.png"
+    "cover": "/covers/movies/zumbilandia.jpg"
   },
   "orgulho_e_preconceito_e_zumbis": {
     "title": "Orgulho e Preconceito e Zumbis",
@@ -53,7 +53,7 @@
     "company": "Screen Gems",
     "release_year": 2016,
     "featured": false,
-    "cover": "/caminho/para/orgulho_e_preconceito_e_zumbis.png"
+    "cover": "/covers/movies/opz.jpg"
   },
   "meu_namorado_e_um_zumbi": {
     "title": "Meu Namorado é um Zumbi",
@@ -61,7 +61,7 @@
     "company": "Summit Entertainment",
     "release_year": 2013,
     "featured": false,
-    "cover": "/caminho/para/meu_namorado_e_um_zumbi.png"
+    "cover": "/covers/movies/warm-bodies.jpg"
   },
   "dead_snow": {
     "title": "Dead Snow",
@@ -69,7 +69,7 @@
     "company": "IFC Films",
     "release_year": 2009,
     "featured": true,
-    "cover": "/caminho/para/dead_snow.png"
+    "cover": "/covers/movies/dead-snow.jpg"
   },
   "a_volta_dos_mortos_vivos": {
     "title": "A Volta dos Mortos Vivos",
@@ -77,6 +77,6 @@
     "company": "Orion Pictures",
     "release_year": 1985,
     "featured": false,
-    "cover": "/caminho/para/a_volta_dos_mortos_vivos.png"
+    "cover": "/covers/movies/mortos-vivos-2.jpg"
   }
 }
