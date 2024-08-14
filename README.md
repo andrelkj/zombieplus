@@ -255,7 +255,7 @@ const test = base.extend({
 });
 ```
 
-**Note:** at this point you should be able to use both native playwright and page specific functions. 
+**Note:** at this point you should be able to use both native playwright and page specific functions.
 
 ## ✅ Best practices
 
@@ -279,6 +279,118 @@ test('deve logar como administrador', async ({ page }) => {
   await loginPage.visit();
   await loginPage.submit('admin@zombieplus.com', 'pwd123');
   await moviesPage.isLoggedIn();
+});
+```
+
+### Custom Actions
+
+Differently than the POM, custom actions model focus on specific and possible actions breaking free from the pages concept to allow a more flexible approach (e.g. [Movies.js](./tests/actions/Movies.js) file will contain all actions related to movies - create, delete, and so on).
+
+To make this change we updated the pages folder name to actions, removed Page from the file names and classes, and then made the required changes within the code:
+
+Changes in [index.js](./tests/support/index.js) file to import the new classes and files:
+
+```js
+const { test: base, expect } = require('@playwright/test');
+
+const { Leads } = require('../actions/Leads');
+const { Login } = require('../actions/Login');
+const { Movies } = require('../actions/Movies');
+const { Toast } = require('../actions/Components');
+
+// create a updated page context that extends the actual page plus all POM imports
+const test = base.extend({
+  page: async ({ page }, use) => {
+    // store the original page context into a variable
+    const context = page;
+
+    // inject each individual page into the page context
+    context['leads'] = new Leads(page);
+    context['login'] = new Login(page);
+    context['movies'] = new Movies(page);
+    context['toast'] = new Toast(page);
+
+    await use(context);
+  },
+});
+
+export { test, expect };
+```
+
+Changes in the [leads.spec.js](./tests/e2e/leads.spec.js) file to call **leads** instead of **landingPage**:
+
+```js
+const { test, expect } = require('../support');
+const { faker } = require('@faker-js/faker');
+
+test('deve cadastrar um lead na fila de espera', async ({ page }) => {
+  const leadName = faker.person.fullName();
+  const leadEmail = faker.internet.email();
+
+  await page.leads.visit();
+  await page.leads.openLeadModal();
+  await page.leads.submitLeadForm(leadName, leadEmail);
+
+  const message =
+    'Agradecemos por compartilhar seus dados conosco. Em breve, nossa equipe entrará em contato!';
+  await page.toast.containText(message);
+});
+
+test('não deve cadastrar quando o email já existe', async ({
+  page,
+  request,
+}) => {
+  const leadName = faker.person.fullName();
+  const leadEmail = faker.internet.email();
+
+  // send a new lead through API
+  const newLead = await request.post('http://localhost:3333/leads', {
+    data: {
+      name: leadName,
+      email: leadEmail,
+    },
+  });
+
+  // confirm status OK is returned (200-299)
+  expect(newLead.ok()).toBeTruthy();
+
+  await page.leads.visit();
+  await page.leads.openLeadModal();
+  await page.leads.submitLeadForm(leadName, leadEmail);
+
+  const message =
+    'O endereço de e-mail fornecido já está registrado em nossa fila de espera.';
+  await page.toast.containText(message);
+});
+
+test('não deve cadastrar com email incorreto', async ({ page }) => {
+  await page.leads.visit();
+  await page.leads.openLeadModal();
+  await page.leads.submitLeadForm('Customer User', 'customer.test.com');
+  await page.leads.alertHaveText('Email incorreto');
+});
+
+test('não deve cadastrar quando o nome não é preenchido', async ({ page }) => {
+  await page.leads.visit();
+  await page.leads.openLeadModal();
+  await page.leads.submitLeadForm('', 'customer@test.com');
+  await page.leads.alertHaveText('Campo obrigatório');
+});
+
+test('não deve cadastrar quando o email não é preenchido', async ({ page }) => {
+  await page.leads.visit();
+  await page.leads.openLeadModal();
+  await page.leads.submitLeadForm('Customer User', '');
+  await page.leads.alertHaveText('Campo obrigatório');
+});
+
+test('não deve cadastrar quando nenhum campo é preenchido', async ({
+  page,
+}) => {
+  await page.leads.visit();
+  await page.leads.openLeadModal();
+  await page.leads.submitLeadForm('', '');
+  await page.leads.alertHaveText(['Campo obrigatório', 'Campo obrigatório']);
 });
 ```
 

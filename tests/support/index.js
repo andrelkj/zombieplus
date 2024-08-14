@@ -1,9 +1,9 @@
 const { test: base, expect } = require('@playwright/test');
 
-const { LandingPage } = require('../pages/LandingPage');
-const { LoginPage } = require('../pages/LoginPage');
-const { MoviesPage } = require('../pages/MoviesPage');
-const { Toast } = require('../pages/Components');
+const { Leads } = require('../actions/Leads');
+const { Login } = require('../actions/Login');
+const { Movies } = require('../actions/Movies');
+const { Toast } = require('../actions/Components');
 
 // create a updated page context that extends the actual page plus all POM imports
 const test = base.extend({
@@ -12,9 +12,9 @@ const test = base.extend({
     const context = page;
 
     // inject each individual page into the page context
-    context['landing'] = new LandingPage(page);
-    context['login'] = new LoginPage(page);
-    context['movies'] = new MoviesPage(page);
+    context['leads'] = new Leads(page);
+    context['login'] = new Login(page);
+    context['movies'] = new Movies(page);
     context['toast'] = new Toast(page);
 
     await use(context);
