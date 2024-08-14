@@ -20,6 +20,12 @@ Repository for the Zombie Plus system's automated test project, built during the
 2. Run tests in Headless mode with `npx playwright test`
 3. View the test report with `npx playwright show-report`
 
+## 📑 Documents
+
+For this project two main documents were created:
+- [Zombie+ Roadmap](https://whimsical.com/zombie-roadmap-2G4AWdgEXavAxBQidogS4o) - that includes test cases for each application functionality
+- [Zombie+ Regression Tests](https://qaxperience.notion.site/Zombie-Regression-Tests-5d726cfee1484a2e9ee177b9467cb00c) - that contains a brief test plan for regression test execution
+
 ## 📊 Database
 
 We are using Postgres SQL as the main database that is running locally through Docker containers. In order to stablish connection to the postgres database we installed the pg library `npm i pg --save-dev`.
