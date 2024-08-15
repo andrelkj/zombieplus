@@ -24,7 +24,28 @@ export class Api {
     console.log(this.token);
   }
 
+  async getCompanyIdByName(companyName) {
+    // set the token to authenticate the user
+    await this.setToken();
+
+    // setup headers information
+    const response = await this.request.get('http://localhost:3333/companies', {
+      headers: {
+        Authorization: this.token,
+      },
+      params: {
+        name: companyName,
+      },
+    });
+
+    expect(response.ok()).toBeTruthy();
+
+    const body = JSON.parse(await response.text());
+    return body.data[0].id;
+  }
+
   async postMovie(movie) {
+    const companyId = await this.getCompanyIdByName(movie.company);
     // set the token to authenticate the user
     await this.setToken();
 
@@ -39,7 +60,7 @@ export class Api {
       multipart: {
         title: movie.title,
         overview: movie.overview,
-        company_id: 'b7289a60-19a3-4d65-9ec4-8a852fe07695',
+        company_id: companyId,
         release_year: movie.release_year,
         featured: movie.featured,
       },

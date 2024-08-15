@@ -20,7 +20,6 @@ test('não deve cadastrar quando o título é duplicado', async ({
   request,
 }) => {
   const movie = data.duplicate;
-
   await request.api.postMovie(movie);
 
   await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin');
