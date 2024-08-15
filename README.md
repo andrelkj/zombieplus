@@ -268,6 +268,40 @@ const test = base.extend({
 
 **Note:** at this point you should be able to use both native playwright and page specific functions.
 
+### Parallel execution issues
+
+Playwright executes test cases and test suites in parallel by default:
+
+```js
+...
+module.exports = defineConfig({
+  ...
+  fullyParallel: true,
+  ...
+})
+```
+
+although when working with requests to the API of beforeAll hooks, this parallelization of execution can cause issues because this beforeAll will be called more than 1 time (it turns into a beforeEach basically), e.g. public.movie delete query that deletes movies in the middle of the test execution.
+
+to fix that we can define [playwright config file](./playwright.config.js) `fullyParallel: false,` which will still run suites in multitread, but will execute each individual test case at a time.
+
+#### Define specific deletions
+
+Another alternative to keep test cases running in parallel would be to set one deletion query for each test case that would delete test case specific movies by title:
+
+```js
+test('deve poder cadastrar um novo filme', async ({ page }) => {
+  const movie = data.create;
+  await executeSQL(`DELETE FROM public.movies WHERE title='${movie.title}'`);
+
+  await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin');
+  await page.movies.create(movie);
+  await page.popup.haveText(
+    `O filme '${movie.title}' foi adicionado ao catálogo.`
+  );
+});
+```
+
 ## ✅ Best practices
 
 ### Test independence
@@ -558,6 +592,16 @@ test('não deve cadastrar quando o título é duplicado', async ({
 ```
 
 **Note:** it is a good practice to create a separate api folder to keep all your api requests.
+
+### Create selector based and key/parent values
+
+It is pretty common to have duplicated classes for elements like lists, tables and others, and in this case using the class is not ideal once you might enconter duplication issues even if you delete the previous data.
+
+A better aproach is to use key values or parent elements to ensure a more assertive selector, and xpath is a good options for that so you could use `//td[text()="Guerra Mundial Z"]/..//button`. But Plawright have it's own way to handle this locators with **getByRole** function:
+
+```js
+await page.getByRole('row', { name: movie.title }).getByRole('button').click();
+```
 
 ---
 
