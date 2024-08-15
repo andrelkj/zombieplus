@@ -21,7 +21,6 @@ export class Api {
     // transform response into JSON and store token value into a variable
     const body = JSON.parse(await response.text());
     this.token = 'Bearer ' + body.token;
-    console.log(this.token);
   }
 
   async getCompanyIdByName(companyName) {
