@@ -25,9 +25,6 @@ export class Api {
   }
 
   async getCompanyIdByName(companyName) {
-    // set the token to authenticate the user
-    await this.setToken();
-
     // setup headers information
     const response = await this.request.get('http://localhost:3333/companies', {
       headers: {
@@ -46,8 +43,6 @@ export class Api {
 
   async postMovie(movie) {
     const companyId = await this.getCompanyIdByName(movie.company);
-    // set the token to authenticate the user
-    await this.setToken();
 
     // setup headers information
     const response = await this.request.post('http://localhost:3333/movies', {
