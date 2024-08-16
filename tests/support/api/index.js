@@ -63,8 +63,8 @@ export class Api {
     expect(response.ok()).toBeTruthy();
   }
 
-  async postSerie(serie) {
-    const companyId = await this.getCompanyIdByName(serie.company);
+  async postTvshow(tvshow) {
+    const companyId = await this.getCompanyIdByName(tvshow.company);
 
     // setup headers information
     const response = await this.request.post('http://localhost:3333/tvshows', {
@@ -75,12 +75,12 @@ export class Api {
       },
       // fill the body payload
       multipart: {
-        title: serie.title,
-        overview: serie.overview,
+        title: tvshow.title,
+        overview: tvshow.overview,
         company_id: companyId,
-        release_year: serie.release_year,
-        seasons: serie.season,
-        featured: serie.featured,
+        release_year: tvshow.release_year,
+        seasons: tvshow.season,
+        featured: tvshow.featured,
       },
     });
 

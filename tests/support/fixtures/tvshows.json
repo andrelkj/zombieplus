@@ -6,7 +6,7 @@
     "release_year": 2010,
     "featured": true,
     "season": 10,
-    "cover": "/covers/series/twd.png"
+    "cover": "/covers/tvshows/twd.png"
   },
   "duplicate": {
     "title": "Fear the Walking Dead",
@@ -15,7 +15,7 @@
     "release_year": 2015,
     "featured": false,
     "season": 5,
-    "cover": "/covers/series/ftwd.png"
+    "cover": "/covers/tvshows/ftwd.png"
   },
   "to_remove": {
     "title": "Reality Z",
@@ -24,7 +24,7 @@
     "release_year": 2015,
     "featured": false,
     "season": 1,
-    "cover": "/covers/series/404.png"
+    "cover": "/covers/tvshows/404.png"
   },
   "search": {
     "input": "zombie",
@@ -33,7 +33,7 @@
       {
         "title": "Zombie Nation",
         "overview": "Um grupo de sobreviventes tenta transportar o único sobrevivente conhecido de uma praga zumbi pelo país para o último laboratório funcional.",
-        "company": "Universal Picturess",
+        "company": "Universal Pictures",
         "release_year": 2014,
         "featured": false,
         "season": 3,

@@ -1,6 +1,6 @@
 const { test, expect } = require('../support');
 
-const data = require('../support/fixtures/series.json');
+const data = require('../support/fixtures/tvshows.json');
 const { executeSQL } = require('../support/database');
 
 test.beforeAll(async () => {
@@ -8,19 +8,19 @@ test.beforeAll(async () => {
 });
 
 test('deve poder cadastrar uma nova série', async ({ page }) => {
-  const serie = data.create;
+  const tvshow = data.create;
 
   await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin');
-  await page.series.create(serie);
+  await page.tvshows.create(tvshow);
 });
 
 test('deve poder remover uma série', async ({ page, request }) => {
-  const serie = data.to_remove;
-  await request.api.postSerie(serie);
+  const tvshow = data.to_remove;
+  await request.api.postTvshow(tvshow);
 
   await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin');
-  await page.series.go();
-  await page.series.remove(serie.title);
+  await page.tvshows.go();
+  await page.tvshows.remove(tvshow.title);
   await page.popup.haveText('Série removida com sucesso.');
 });
 
@@ -28,13 +28,13 @@ test('não deve cadastrar quando o título é duplicado', async ({
   page,
   request,
 }) => {
-  const serie = data.duplicate;
-  await request.api.postSerie(serie);
+  const tvshow = data.duplicate;
+  await request.api.postTvshow(tvshow);
 
   await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin');
-  await page.series.create(serie);
+  await page.tvshows.create(tvshow);
   await page.popup.haveText(
-    `O título '${serie.title}' já consta em nosso catálogo. Por favor, verifique se há necessidade de atualizações ou correções para este item.`
+    `O título '${tvshow.title}' já consta em nosso catálogo. Por favor, verifique se há necessidade de atualizações ou correções para este item.`
   );
 });
 
@@ -43,14 +43,27 @@ test('não deve cadastrar quando os campos obrigatórios não são preenchidos',
 }) => {
   await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin');
 
-  await page.series.go();
-  await page.series.goForm();
-  await page.series.submit();
-  await page.series.alertHaveText([
+  await page.tvshows.go();
+  await page.tvshows.goForm();
+  await page.tvshows.submit();
+  await page.tvshows.alertHaveText([
     'Campo obrigatório',
     'Campo obrigatório',
     'Campo obrigatório',
     'Campo obrigatório',
     'Campo obrigatório (apenas números)',
   ]);
+});
+
+test('deve realizar busca pelo termo zumbi', async ({ page, request }) => {
+  const tvshows = data.search;
+
+  tvshows.data.forEach(async (tvshow) => {
+    await request.api.postTvshow(tvshow);
+  });
+
+  await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin');
+  await page.tvshows.go();
+  await page.tvshows.search(tvshows.input);
+  await page.tvshows.tableHave(tvshows.outputs);
 });
