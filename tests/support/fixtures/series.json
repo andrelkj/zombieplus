@@ -1,0 +1,62 @@
+{
+  "create": {
+    "title": "The Walking Dead",
+    "overview": "Um grupo de sobreviventes é constantemente desafiado a manter sua humanidade enquanto vive entre um apocalipse zumbi.",
+    "company": "Fox Entertainment",
+    "release_year": 2010,
+    "featured": true,
+    "season": 10,
+    "cover": "/covers/series/twd.png"
+  },
+  "duplicate": {
+    "title": "Fear the Walking Dead",
+    "overview": "Uma família disfuncional enfrenta novos desafios tentando sobreviver ao início do apocalipse zumbi.",
+    "company": "Fox Entertainment",
+    "release_year": 2015,
+    "featured": false,
+    "season": 5,
+    "cover": "/covers/series/ftwd.png"
+  },
+  "to_remove": {
+    "title": "Reality Z",
+    "overview": "Participantes de um reality show ficam isolados dentro do programa enquanto um apocalipse zumbi acontece no mundo exterior.",
+    "company": "Netflix",
+    "release_year": 2015,
+    "featured": false,
+    "season": 1,
+    "cover": "/covers/series/404.png"
+  },
+  "search": {
+    "input": "zombie",
+    "outputs": ["Zombie Nation", "Black Zombie", "Santa Clarita Zombie"],
+    "data": [
+      {
+        "title": "Zombie Nation",
+        "overview": "Um grupo de sobreviventes tenta transportar o único sobrevivente conhecido de uma praga zumbi pelo país para o último laboratório funcional.",
+        "company": "Universal Picturess",
+        "release_year": 2014,
+        "featured": false,
+        "season": 3,
+        "cover": "/caminho/para/404.png"
+      },
+      {
+        "title": "Black Zombie",
+        "overview": "No início de um apocalipse zumbi, estranhos se unem para encontrar a força de que precisam para sobreviver e voltar para seus entes queridos.",
+        "company": "Netflix",
+        "release_year": 2019,
+        "featured": false,
+        "season": 4,
+        "cover": "/caminho/para/404.png"
+      },
+      {
+        "title": "Santa Clarita Zombie",
+        "overview": "A vida de um casal de corretores de imóveis muda quando ela passa por uma dramática transformação que os leva por um caminho de morte e destruição... de uma boa maneira.",
+        "company": "Netflix",
+        "release_year": 2017,
+        "featured": false,
+        "season": 5,
+        "cover": "/caminho/para/404.pngs"
+      }
+    ]
+  }
+}
