@@ -7,6 +7,7 @@ export class Series {
 
   async go() {
     await this.page.locator('a[href$="tvshows"]').click();
+    await expect(this.page.url()).toContain('tvshows');
   }
 
   async goForm() {
@@ -49,5 +50,13 @@ export class Series {
     }
 
     await this.submit();
+  }
+
+  async remove(title) {
+    await this.page
+      .getByRole('row', { name: title })
+      .getByRole('button')
+      .click();
+    await this.page.click('.confirm-removal');
   }
 }

@@ -62,4 +62,28 @@ export class Api {
 
     expect(response.ok()).toBeTruthy();
   }
+
+  async postSerie(serie) {
+    const companyId = await this.getCompanyIdByName(serie.company);
+
+    // setup headers information
+    const response = await this.request.post('http://localhost:3333/tvshows', {
+      headers: {
+        Authorization: this.token,
+        ContentType: 'multipart/form-data',
+        Accept: 'application/json, text/plain, */*',
+      },
+      // fill the body payload
+      multipart: {
+        title: serie.title,
+        overview: serie.overview,
+        company_id: companyId,
+        release_year: serie.release_year,
+        seasons: serie.season,
+        featured: serie.featured,
+      },
+    });
+
+    expect(response.ok()).toBeTruthy();
+  }
 }
