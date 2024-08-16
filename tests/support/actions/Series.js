@@ -52,6 +52,10 @@ export class Series {
     await this.submit();
   }
 
+  async alertHaveText(target) {
+    await expect(this.page.locator('.alert')).toHaveText(target);
+  }
+
   async remove(title) {
     await this.page
       .getByRole('row', { name: title })

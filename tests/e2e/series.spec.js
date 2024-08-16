@@ -37,3 +37,20 @@ test('não deve cadastrar quando o título é duplicado', async ({
     `O título '${serie.title}' já consta em nosso catálogo. Por favor, verifique se há necessidade de atualizações ou correções para este item.`
   );
 });
+
+test('não deve cadastrar quando os campos obrigatórios não são preenchidos', async ({
+  page,
+}) => {
+  await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin');
+
+  await page.series.go();
+  await page.series.goForm();
+  await page.series.submit();
+  await page.series.alertHaveText([
+    'Campo obrigatório',
+    'Campo obrigatório',
+    'Campo obrigatório',
+    'Campo obrigatório',
+    'Campo obrigatório (apenas números)',
+  ]);
+});
