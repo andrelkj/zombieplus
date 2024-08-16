@@ -603,6 +603,70 @@ A better aproach is to use key values or parent elements to ensure a more assert
 await page.getByRole('row', { name: movie.title }).getByRole('button').click();
 ```
 
+### Dotenv configuration file
+
+When you start working with different environments it might be intersting to create a `.env` file that will store all your environment dependencies.
+
+In order to use it you:
+
+1. First create and store the data into the .env file:
+
+```conf
+BASE_API=http://apiendpoint:NNNN
+BASE_URL=http://webendpoint:NNNN
+
+# Database
+DB_HOST=dbhost
+DB_NAME=dbname
+DB_USER=dbuser
+DB_PASSWORD=dbpass
+DB_PORT=5432
+```
+
+2. Then, to manage your environments you can install dotenv library with `npm install dotenv`
+3. Import the dotenv configuration `require('dotenv').config()` to all the files you want to use them in
+4. Replace the data for the environment variables defined
+
+```js
+// database.js
+require('dotenv').config();
+...
+
+const DbConfig = {
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+};
+...
+```
+
+```js
+// api/index.js
+require('dotenv').config()
+const { expect } = require('@playwright/test');
+
+export class Api {
+  constructor(request) {
+    this.baseApi = process.env.BASE_API
+    ...
+  }
+
+  // define setToken function to send a post request with the given JSON payload
+  async setToken() {
+    const response = await this.request.post(this.baseApi + '/sessions', {
+      data: {
+        email: 'admin@zombieplus.com',
+        password: 'pwd123',
+      },
+    });
+    ...
+  }
+  ...
+}
+```
+
 ---
 
 Curso disponível em https://qaxperience.com
