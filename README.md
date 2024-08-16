@@ -667,6 +667,35 @@ export class Api {
 }
 ```
 
+### Reporting
+
+We're using [Tesults](https://www.tesults.com/docs/playwright) as reporter for that:
+
+1. Install Tesults with `npm install playwright-tesults-reporter`
+2. Add the reporter to [playwright config file](./playwright.config.js)
+
+```js
+...
+  reporter: [
+    ['dot'],
+    ['playwright-tesults-reporter', { 'tesults-target': 'token' }],
+  ],
+...
+```
+
+3. Go to your account on [tesults](https://www.tesults.com/)
+4. Create a new project under configuration
+5. Link the project with the generated token
+
+```js
+  reporter: [
+    ['dot'],
+    ['playwright-tesults-reporter', { 'tesults-target': process.env.TOKEN }],
+  ],
+```
+
+**Note:** you'll need an account but there's a free version available and ideally you should store your token in a hidden file as a `.env` config file.
+
 ---
 
 Curso disponível em https://qaxperience.com
