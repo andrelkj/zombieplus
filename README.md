@@ -31,7 +31,7 @@ For this project two main documents were created:
 
 We are using Postgres SQL as the main database that is running locally through Docker containers. In order to stablish connection to the postgres database we installed the pg library `npm i pg --save-dev`.
 
-## API
+## 📨 API
 
 To manage requests from Zombie+ application we are using Insomnia.
 
